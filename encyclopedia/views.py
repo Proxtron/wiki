@@ -26,4 +26,25 @@ def entry(request, title):
             "html_content":html_content
         })
 
+def search(request):
+    if request.method == "POST":
+        entry_search = request.POST["q"]
+        html_content = convert_md_to_html(entry_search)
+        if html_content is not None:
+            return render(request, "encyclopedia/entry.html", {
+                "title" : entry_search,
+                "html_content":html_content
+            })
+        else:
+            possible_entries = []
+            for entry in util.list_entries():
+                if entry_search.lower() in entry.lower():
+                    possible_entries.append(entry)
 
+            if len(possible_entries) == 0:
+                return render(request, "encyclopedia/error.html")
+            else:
+                return render(request, "encyclopedia/search.html", {
+                    "possible_entries" : possible_entries,
+                    "entry" : entry_search
+                })

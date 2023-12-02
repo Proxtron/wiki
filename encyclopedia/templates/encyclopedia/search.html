@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block body %}
+
+    <h2> "{{entry}}" is not an entry. Were you looking for these entries? </h2>
+
+
+    {% for entry in possible_entries %}
+        <li>
+            <a href="{% url 'entry' title=entry %}"> {{entry}} </a>
+        </li>
+    {% endfor %}
+{% endblock %}
